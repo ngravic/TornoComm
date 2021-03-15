@@ -1,162 +1,171 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
-  <head>
+
+<head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <title>Send Serial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Torno</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/all.min.css" rel="stylesheet" />
-  </head>
-  <body class="d-flex flex-column h-100 w-100">
+</head>
+
+<body class="d-flex flex-column h-100 w-100">
     <div class="modal" id="loading" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Cargando</h5>              
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cargando</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Cargando el programa</p>
+                </div>
             </div>
-            <div class="modal-body">
-              <p>Cargando el programa</p>
-            </div>            
-          </div>
         </div>
     </div>
     <div class="modal fade" id="config" tabindex="-1" role="dialog" aria-labelledby="config" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Configuración</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Configuración</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-3">Baud Rate</div>
+                        <div class="col-auto">
+                            <select class="form-control" id="baud">
+                                <option>110</option>
+                                <option>150</option>
+                                <option>300</option>
+                                <option>600</option>
+                                <option>1200</option>
+                                <option>2400</option>
+                                <option>4800</option>
+                                <option>9600</option>
+                                <option>38400</option>
+                                <option>57600</option>
+                                <option>115200</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">Parity</div>
+                        <div class="col-auto">
+                            <select class="form-control" id="parity">
+                                <option value="none">None</option>
+                                <option value="odd">Odd</option>
+                                <option value="even">Even</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">Data bits</div>
+                        <div class="col-auto">
+                            <select class="form-control" id="bits">
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">Stop Bits</div>
+                        <div class="col-auto">
+                            <select class="form-control" id="stop">
+                                <option>1</option>
+                                <option>1.5</option>
+                                <option>2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">Flow Control</div>
+                        <div class="col-auto">
+                            <select class="form-control" id="flow">
+                                <option value="none">None</option>
+                                <option value="rts/cts">RTS/CTS</option>
+                                <option value="xon/off">XON/XOFF</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" onclick="save()" class="btn btn-primary">Guardar</button>
+                </div>
             </div>
-            <div class="modal-body">
-              <div class="row">
-                    <div class="col-3">Baud Rate</div>
-                    <div class="col-auto">
-                        <select class="form-control" id="baud">
-                            <option>110</option>
-                            <option>150</option>
-                            <option>300</option>
-                            <option>600</option>
-                            <option>1200</option>
-                            <option>2400</option>
-                            <option>4800</option>
-                            <option>9600</option>
-                            <option>38400</option>
-                            <option>57600</option>
-                            <option>115200</option>
-                        </select>
-                    </div>
-              </div>
-              <div class="row">
-                    <div class="col-3">Parity</div>
-                    <div class="col-auto">
-                        <select class="form-control" id="parity">
-                            <option value="none">None</option>
-                            <option value="odd">Odd</option>
-                            <option value="even">Even</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-3">Data bits</div>
-                    <div class="col-auto">
-                        <select class="form-control" id="bits">
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-3">Stop Bits</div>
-                    <div class="col-auto">
-                        <select class="form-control" id="stop">
-                            <option>1</option>
-                            <option>1.5</option>
-                            <option>2</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-3">Flow Control</div>
-                    <div class="col-auto">
-                        <select class="form-control" id="flow">
-                            <option value="none">None</option>
-                            <option value="rts/cts">RTS/CTS</option>
-                            <option value="xon/off">XON/XOFF</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button type="button" onclick="save()" class="btn btn-primary">Guardar</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 
     <main role="main">
-      <div class="container" style="margin-top: 10px;">
-        <button class="btn btn-primary float-right" data-toggle="modal" data-target="#config">
-          <i class="fas fa-cog"></i>
-        </button>
-        <h3 style="margin-top: 10px;">Serial</h3>
-        <hr />
-        <div style="padding-left: 10px;">
-            <div class="row form-inline" style="margin-bottom: 10px;">
-                <div class="form-group">
-                    <label for="file">Archivo de programa</label>
-                    <input type="file" class="form-control-file" id="file">
+        <div class="container" style="margin-top: 10px;">
+            <button class="btn btn-primary float-right" data-toggle="modal" data-target="#config">
+                <i class="fas fa-cog"></i>
+            </button>
+            <h3 style="margin-top: 10px;">Enviar datos</h3>
+            <hr />
+            <div style="padding-left: 10px;">
+                <div class="row form-inline" style="margin-bottom: 10px;">
+                    <div class="form-group">
+                        <label for="file">Archivo de programa</label>
+                        <input type="file" class="form-control-file" id="file">
+                    </div>
+                </div>
+                <div class="row form-inline" style="margin-bottom: 10px;">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="add_percent">
+                        <label class="form-check-label" for="add_percent">Agregar % al principio y fin del
+                            código</label>
+                    </div>
+                </div>
+                <div class="row form-inline">
+                    <div class="form-check form-group mb-1">
+                        <input type="checkbox" class="form-check-input" onchange="prog_nameOnChange()"
+                            id="add_prog_name">
+                        <label class="form-check-label" for="add_prog_name">Agregar nombre de programa</label>
+                    </div>
+                    <div class="form-group mx-sm-3">
+                        <input disabled class="form-control" type="text" id="prog_name"
+                            placeholder="Nombre de programa">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center" style="margin-top: 10px;">
+                        <button id="singlebutton" name="singlebutton" class="btn btn-success" onclick="send()">
+                            SUBIR
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="row form-inline" style="margin-bottom: 10px;">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="add_percent">
-                    <label class="form-check-label" for="add_percent">Agregar % al principio y fin del código</label>
+            <hr />
+            <h3 style="margin-top: 10px;">Recibir datos </h3>
+            <div style="padding-left: 10px;">
+                <div class="row">
+                    <div class="col-12 text-center" style="margin-top: 10px;">
+                        <button class="btn btn-success" onclick="recv()">RECIBIR</button>
+                    </div>
                 </div>
             </div>
-            <div class="row form-inline">
-                <div class="form-check form-group mb-1">
-                    <input type="checkbox" class="form-check-input" onchange="prog_nameOnChange()" id="add_prog_name">
-                    <label class="form-check-label" for="add_prog_name">Agregar nombre de programa</label>
-                </div>
-                <div class="form-group mx-sm-3">
-                    <input disabled class="form-control" type="text" id="prog_name" placeholder="Nombre de programa">
-                </div>
-            </div>
-            <div class="row">
-            <div class="col-12 text-center" style="margin-top: 10px;">
-                <button
-                id="singlebutton"
-                name="singlebutton"
-                class="btn btn-success"
-                onclick="send()"
-                >
-                SUBIR
-                </button>
-            </div>
-            </div>
+
+
         </div>
-      </div>
-    </main>   
+    </main>
     <script src="/js/jquery-3.5.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/filesaver.min.js"></script>
     <script>
         const prog_nameOnChange = () => {
             let checked = $("#add_prog_name").prop('checked');
-            if(checked) {
+            if (checked) {
                 $("#prog_name").prop('disabled', false);
             } else {
                 $("#prog_name").prop('disabled', true);
             }
 
         };
-        const has_config = ()=> {
+        const has_config = () => {
             var config = localStorage.getItem("config");
             return (config !== null);
         };
@@ -167,8 +176,8 @@
             let data_bits = 8;
             let stop_bits = 1;
             let flow_control = "rts/cts";
-            if(!config) {                
-                $("#config").modal();                
+            if (!config) {
+                $("#config").modal();
             } else {
                 config = JSON.parse(config);
                 baud_rate = config['baud_rate'];
@@ -191,7 +200,7 @@
             };
         };
 
-        const save = () => { 
+        const save = () => {
             let baud_rate = parseInt($("#baud").val());
             let parity = $("#parity").val();
             let data_bits = parseInt($("#bits").val());
@@ -207,13 +216,34 @@
             $("#config").modal('hide');
         };
 
-        const send = () => {            
-            if(!has_config()) {
+        const recv = () => {
+            if (!has_config()) {
+                alert("El dispositivo no esta configurado");
+                return;
+            }
+            let config = load();
+            const reader = new FileReader();
+            reader.addEventListener('load', async (event) => {
+                let file = event.target.result;
+                let response = await fetch("/serial/receive?" + new URLSearchParams(config).toString(), {
+                    method: "GET"
+                });
+
+                var response_blob = await response.blob();
+                $("#loading").modal('hide');
+                saveAs(response_blob, Date.now().toString() + '.nc');
+            });
+            reader.readAsBinaryString(files_obj[0]);
+            $("#loading").modal('show');
+        }
+
+        const send = () => {
+            if (!has_config()) {
                 alert("El dispositivo no esta configurado");
                 return;
             }
             let files_obj = document.getElementById('file').files;
-            if(!files_obj || files_obj.length < 1) {
+            if (!files_obj || files_obj.length < 1) {
                 alert("Debe cargar un archivo de programa");
                 return;
             }
@@ -224,33 +254,34 @@
                 let add_percent = $("#add_percent").prop('checked');
                 let add_name = $("#add_prog_name").prop('checked');
                 let name = $("#prog_name").val();
-                if(add_percent) {
+                if (add_percent) {
                     file = '%\n' + file + '\n%\n';
                 }
-                if(add_name) {
+                if (add_name) {
                     let percent_idx = file.indexOf('%');
                     let subs = file.slice(0, percent_idx) + "%\n" + name;
-                    file = subs + file.slice(percent_idx + 1) ;
+                    file = subs + file.slice(percent_idx + 1);
                 }
                 let response = await fetch("/serial/send", {
                     method: "POST",
                     headers: {
-                      'Content-Type': 'application/json'
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(Object.assign(config, {file: file}))
+                    body: JSON.stringify(Object.assign(config, { file: file }))
                 });
-                
+
                 var response_json = await response.json();
                 $("#loading").modal('hide');
-                alert(response_json.status + ": " + response_json.message);                
+                alert(response_json.status + ": " + response_json.message);
             });
             reader.readAsBinaryString(files_obj[0]);
             $("#loading").modal('show');
         };
 
-        $(document).ready(()=>{
+        $(document).ready(() => {
             load();
         });
     </script>
-  </body>
+</body>
+
 </html>
