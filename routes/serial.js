@@ -57,6 +57,7 @@ router.get('/receive', function(req, res, next) {
       buffer.push(data);
       if (data == '%') {
         if(file_start_flag) {
+          serial.flush();
           serial.close();
           res.send(buffer.join('\n'));
         } else {
