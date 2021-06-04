@@ -22,6 +22,18 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="loading-load" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Descargar programa</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Presione enviar archivo desde la maquina CNC para comenzar la descarga de datos</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="config" tabindex="-1" role="dialog" aria-labelledby="config" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -222,19 +234,13 @@
                 return;
             }
             let config = load();
-            const reader = new FileReader();
-            reader.addEventListener('load', async (event) => {
-                let file = event.target.result;
-                let response = await fetch("/serial/receive?" + new URLSearchParams(config).toString(), {
-                    method: "GET"
-                });
-
-                var response_blob = await response.blob();
-                $("#loading").modal('hide');
-                saveAs(response_blob, Date.now().toString() + '.nc');
+            $("#loading-load").modal('show');
+            let response = await fetch("/serial/receive?" + new URLSearchParams(config).toString(), {
+                method: "GET"
             });
-            reader.readAsBinaryString(files_obj[0]);
-            $("#loading").modal('show');
+            var response_blob = await response.blob();
+            $("#loading-load").modal('hide');
+            saveAs(response_blob, Date.now().toString() + '.nc');
         }
 
         const send = () => {
