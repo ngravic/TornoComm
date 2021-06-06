@@ -16,10 +16,14 @@ router.post('/send', function(req, res, next) {
   }, (e)=> {
     if(e) {
       console.error(e)
-      res.json({status: 'Error al conectar', message: e})
+      res.json({status: 'Error al conectar. Espere 10 segundos y vuelva a intentar', message: e})
     }
   })
   serial.on('open', ()=> {
+    var timeout = setTimeout(() => {
+      serial.drain(() => serial.close());
+      res.json('Error al enviar datos. Timeout');
+    }, req.body['file'].length / req.body['baud_rate'] * 1000)
     serial.write(req.body['file'], (err)=> {
       if(err) {
         console.error(e)
@@ -27,6 +31,7 @@ router.post('/send', function(req, res, next) {
       } else {
         res.json({ status: "OK", message: "Archivo enviado correctamente" })
       }
+      clearTimeout(timeout);
       serial.close()
     })
   })
@@ -45,15 +50,22 @@ router.get('/receive', function(req, res, next) {
   }, (e)=> {
     if(e) {
       console.error(e)
-      res.json({status: 'Error al conectar', message: e})
+      res.json({status: 'Error al conectar. Espere 10 segundos y vuelva a intentar', message: e})
     }
   })
   serial.on('open', ()=> {
+    var timeout = 0;
+    const set_timeout = () => { timeout = setTimeout(() => {
+      serial.flush(() => serial.close());
+      res.json({status: 'Error al recibir datos. Timeout'});
+    }, 10000) };
+    set_timeout();
     var file_start_flag = false;
     var parser = new ReadLine();
     var buffer = [];
     serial.pipe(parser);
     parser.on('data', (data) => {
+      clearTimeout(timeout);
       buffer.push(data);
       if (data == '%') {
         if(file_start_flag) {
@@ -64,6 +76,7 @@ router.get('/receive', function(req, res, next) {
           file_start_flag = true;
         }
       }
+      set_timeout();
     });
   })
 });
