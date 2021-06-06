@@ -228,7 +228,7 @@
             $("#config").modal('hide');
         };
 
-        const recv = () => {
+        const recv = async () => {
             if (!has_config()) {
                 alert("El dispositivo no esta configurado");
                 return;
