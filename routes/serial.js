@@ -5,10 +5,10 @@ var router = express.Router();
 
 router.post('/send', function(req, res, next) {
   const serial = new SerialPort('/dev/ttyUSB0', {
-    baudRate: req.body['baud_rate'],
+    baudRate: parseInt(req.body['baud_rate']),
     parity: req.body['parity'],
-    dataBits: req.body['data_bits'],
-    stopBits: req.body['stop_bits'],
+    dataBits: parseInt(req.body['data_bits']),
+    stopBits: parseInt(req.body['stop_bits']),
     rtscts: req.body['flow_control'] == "rts/cts",
     xany: req.body['flow_control'] == 'xon/off',
     xon: req.body['flow_control'] == 'xon/off',
@@ -39,10 +39,10 @@ router.post('/send', function(req, res, next) {
 
 router.get('/receive', function(req, res, next) {
   const serial = new SerialPort('/dev/ttyUSB0', {
-    baudRate: req.query['baud_rate'],
+    baudRate: parseInt(req.query['baud_rate']),
     parity: req.query['parity'],
-    dataBits: req.query['data_bits'],
-    stopBits: req.query['stop_bits'],
+    dataBits: parseInt(req.query['data_bits']),
+    stopBits: parseInt(req.query['stop_bits']),
     rtscts: req.query['flow_control'] == "rts/cts",
     xany: req.query['flow_control'] == 'xon/off',
     xon: req.query['flow_control'] == 'xon/off',
